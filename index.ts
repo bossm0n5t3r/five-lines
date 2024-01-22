@@ -184,12 +184,8 @@ function update() {
 const handleInputs = () => {
   while (inputs.length > 0) {
     let current = inputs.pop();
-    handleInput(current);
+    current.handle();
   }
-};
-
-const handleInput = (input: Input) => {
-  input.handle();
 };
 
 const updateMap = () => {
