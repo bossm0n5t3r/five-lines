@@ -100,11 +100,15 @@ function update() {
 const handleInputs = () => {
   while (inputs.length > 0) {
     let current = inputs.pop();
-    if (current === Input.LEFT) moveHorizontal(-1);
-    else if (current === Input.RIGHT) moveHorizontal(1);
-    else if (current === Input.UP) moveVertical(-1);
-    else if (current === Input.DOWN) moveVertical(1);
+    handleInput(current);
   }
+};
+
+const handleInput = (input: Input) => {
+  if (input === Input.LEFT) moveHorizontal(-1);
+  else if (input === Input.RIGHT) moveHorizontal(1);
+  else if (input === Input.UP) moveVertical(-1);
+  else if (input === Input.DOWN) moveVertical(1);
 };
 
 const updateMap = () => {
