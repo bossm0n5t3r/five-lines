@@ -36,6 +36,7 @@ interface Tile {
   isPushable(): boolean;
 
   moveHorizontal(dx: number): void;
+  moveVertical(dy: number): void;
 }
 
 class Air implements Tile {
@@ -88,6 +89,10 @@ class Air implements Tile {
 
   moveHorizontal(dx: number): void {
     moveToTile(playerx + dx, playery);
+  }
+
+  moveVertical(dy: number): void {
+    moveToTile(playerx, playery + dy);
   }
 }
 
@@ -145,6 +150,10 @@ class Flux implements Tile {
   moveHorizontal(dx: number): void {
     moveToTile(playerx + dx, playery);
   }
+
+  moveVertical(dy: number): void {
+    moveToTile(playerx, playery + dy);
+  }
 }
 
 class Unbreakable implements Tile {
@@ -199,6 +208,7 @@ class Unbreakable implements Tile {
   }
 
   moveHorizontal(dx: number): void {}
+  moveVertical(dy: number): void {}
 }
 
 class Player implements Tile {
@@ -250,6 +260,7 @@ class Player implements Tile {
   }
 
   moveHorizontal(dx: number): void {}
+  moveVertical(dy: number): void {}
 }
 
 class Stone implements Tile {
@@ -312,6 +323,7 @@ class Stone implements Tile {
       moveToTile(playerx + dx, playery);
     }
   }
+  moveVertical(dy: number): void {}
 }
 
 class FallingStone implements Tile {
@@ -366,6 +378,7 @@ class FallingStone implements Tile {
   }
 
   moveHorizontal(dx: number): void {}
+  moveVertical(dy: number): void {}
 }
 
 class Box implements Tile {
@@ -428,6 +441,7 @@ class Box implements Tile {
       moveToTile(playerx + dx, playery);
     }
   }
+  moveVertical(dy: number): void {}
 }
 
 class FallingBox implements Tile {
@@ -482,6 +496,7 @@ class FallingBox implements Tile {
   }
 
   moveHorizontal(dx: number): void {}
+  moveVertical(dy: number): void {}
 }
 
 class Key1 implements Tile {
@@ -539,6 +554,11 @@ class Key1 implements Tile {
     removeLock1();
     moveToTile(playerx + dx, playery);
   }
+
+  moveVertical(dy: number): void {
+    removeLock1();
+    moveToTile(playerx, playery + dy);
+  }
 }
 
 class Lock1 implements Tile {
@@ -593,6 +613,7 @@ class Lock1 implements Tile {
   }
 
   moveHorizontal(dx: number): void {}
+  moveVertical(dy: number): void {}
 }
 
 class Key2 implements Tile {
@@ -650,6 +671,11 @@ class Key2 implements Tile {
     removeLock2();
     moveToTile(playerx + dx, playery);
   }
+
+  moveVertical(dy: number): void {
+    removeLock2();
+    moveToTile(playerx, playery + dy);
+  }
 }
 
 class Lock2 implements Tile {
@@ -704,6 +730,7 @@ class Lock2 implements Tile {
   }
 
   moveHorizontal(dx: number): void {}
+  moveVertical(dy: number): void {}
 }
 
 enum RawInput {
@@ -774,7 +801,7 @@ class Up implements Input {
   }
 
   handle() {
-    moveVertical(-1);
+    map[playery - 1][playerx].moveVertical(-1);
   }
 }
 
@@ -793,7 +820,7 @@ class Down implements Input {
   }
 
   handle() {
-    moveVertical(1);
+    map[playery + 1][playerx].moveVertical(1);
   }
 }
 
@@ -882,18 +909,6 @@ function moveToTile(newx: number, newy: number) {
   map[newy][newx] = new Player();
   playerx = newx;
   playery = newy;
-}
-
-function moveVertical(dy: number) {
-  if (map[playery + dy][playerx].isEdible()) {
-    moveToTile(playerx, playery + dy);
-  } else if (map[playery + dy][playerx].isKey1()) {
-    removeLock1();
-    moveToTile(playerx, playery + dy);
-  } else if (map[playery + dy][playerx].isKey2()) {
-    removeLock2();
-    moveToTile(playerx, playery + dy);
-  }
 }
 
 function update() {
