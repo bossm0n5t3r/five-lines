@@ -17,6 +17,11 @@ enum RawTile {
   LOCK2,
 }
 
+enum FaillingState {
+  FALLING,
+  RESTING,
+}
+
 interface Tile {
   isAir(): boolean;
   isFlux(): boolean;
@@ -299,7 +304,7 @@ class Player implements Tile {
 }
 
 class Stone implements Tile {
-  constructor(private falling: boolean) {}
+  constructor(private falling: FaillingState) {}
 
   isAir(): boolean {
     return false;
@@ -317,7 +322,7 @@ class Stone implements Tile {
     return true;
   }
   isFallingStone(): boolean {
-    return this.falling;
+    return this.falling === FaillingState.FALLING;
   }
   isBox(): boolean {
     return false;
@@ -893,9 +898,9 @@ const transformTile = (tile: RawTile) => {
     case RawTile.PLAYER:
       return new Player();
     case RawTile.STONE:
-      return new Stone(false);
+      return new Stone(FaillingState.RESTING);
     case RawTile.FALLING_STONE:
-      return new Stone(true);
+      return new Stone(FaillingState.FALLING);
     case RawTile.BOX:
       return new Box();
     case RawTile.FALLING_BOX:
@@ -974,13 +979,13 @@ const updateMap = () => {
 
 const updateTile = (x: number, y: number) => {
   if (map[y][x].isStony() && map[y + 1][x].isAir()) {
-    map[y + 1][x] = new Stone(true);
+    map[y + 1][x] = new Stone(FaillingState.FALLING);
     map[y][x] = new Air();
   } else if (map[y][x].isBoxy() && map[y + 1][x].isAir()) {
     map[y + 1][x] = new FallingBox();
     map[y][x] = new Air();
   } else if (map[y][x].isFallingStone()) {
-    map[y][x] = new Stone(false);
+    map[y][x] = new Stone(FaillingState.RESTING);
   } else if (map[y][x].isFallingBox()) {
     map[y][x] = new Box();
   }
