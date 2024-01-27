@@ -1,10 +1,10 @@
 const nextColor = (t: TrafficColor): TrafficColor => {
   if (t.color() == 'red') {
-    return new Green();
+    return new Red('green');
   } else if (t.color() == 'green') {
-    return new Yellow();
+    return new Red('yellow');
   } else if (t.color() == 'yellow') {
-    return new Red();
+    return new Red('red');
   }
 };
 
@@ -19,28 +19,18 @@ interface TrafficColor {
 }
 
 class Red implements TrafficColor {
-  color(): string {
-    return 'red';
-  }
-  check(car: Car): void {
-    car.stop();
-  }
-}
+  constructor(private col: string) {}
 
-class Yellow implements TrafficColor {
   color(): string {
-    return 'yellow';
+    return this.col;
   }
   check(car: Car): void {
-    car.stop();
-  }
-}
-
-class Green implements TrafficColor {
-  color(): string {
-    return 'green';
-  }
-  check(car: Car): void {
-    car.drive();
+    if (this.color() == 'red') {
+      car.stop();
+    } else if (this.color() == 'yellow') {
+      car.stop();
+    } else if (this.color() == 'green') {
+      car.drive();
+    }
   }
 }
