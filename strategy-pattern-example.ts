@@ -29,3 +29,7 @@ class ArraySum {
     this.accumulator += e;
   }
 }
+
+class MinimumProcessor {}
+
+class SumProcessor {}
