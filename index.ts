@@ -723,7 +723,7 @@ class Key1 implements Tile {
   }
 
   moveHorizontal(dx: number): void {
-    removeLock1();
+    remove(new RemoveLock1());
     moveToTile(playerx + dx, playery);
   }
 
@@ -880,7 +880,7 @@ class Key2 implements Tile {
   }
 
   moveHorizontal(dx: number): void {
-    removeLock2();
+    remove(new RemoveLock2());
     moveToTile(playerx + dx, playery);
   }
 
@@ -1136,8 +1136,7 @@ const transformMap = () => {
 
 let inputs: Input[] = [];
 
-const removeLock1 = () => {
-  let shouldRemove = new RemoveLock1();
+const remove = (shouldRemove: RemoveStrategy) => {
   for (let y = 0; y < map.length; y++) {
     for (let x = 0; x < map[y].length; x++) {
       if (shouldRemove.check(map[y][x])) {
@@ -1162,17 +1161,6 @@ class RemoveLock2 implements RemoveStrategy {
 interface RemoveStrategy {
   check(tile: Tile): boolean;
 }
-
-const removeLock2 = () => {
-  let shouldRemove = new RemoveLock2();
-  for (let y = 0; y < map.length; y++) {
-    for (let x = 0; x < map[y].length; x++) {
-      if (shouldRemove.check(map[y][x])) {
-        map[y][x] = new Air();
-      }
-    }
-  }
-};
 
 function moveToTile(newx: number, newy: number) {
   map[playery][playerx] = new Air();
