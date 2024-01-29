@@ -1137,7 +1137,7 @@ const transformMap = () => {
 let inputs: Input[] = [];
 
 const removeLock1 = () => {
-  let shouldRemove = new RemoveStrategy();
+  let shouldRemove = new RemoveLock1();
   for (let y = 0; y < map.length; y++) {
     for (let x = 0; x < map[y].length; x++) {
       if (shouldRemove.check(map[y][x])) {
@@ -1147,10 +1147,14 @@ const removeLock1 = () => {
   }
 };
 
-class RemoveStrategy {
+class RemoveLock1 implements RemoveStrategy {
   check = (tile: Tile) => {
     return tile.isLock1();
   };
+}
+
+interface RemoveStrategy {
+  check(tile: Tile): boolean;
 }
 
 const removeLock2 = () => {
