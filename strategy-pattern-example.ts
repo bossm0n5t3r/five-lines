@@ -1,13 +1,35 @@
 class ArrayMinimum {
   private processor: MinimumProcessor;
-  constructor(private accumulator: number) {
-    this.processor = new MinimumProcessor();
+  constructor(accumulator: number) {
+    this.processor = new MinimumProcessor(accumulator);
   }
 
   process(arr: number[]) {
     for (let i = 0; i < arr.length; i++) {
-      this.processElement(arr[i]);
+      this.processor.processElement(arr[i]);
     }
+    return this.processor.getAccumulator();
+  }
+}
+
+class ArraySum {
+  private processor: SumProcessor;
+  constructor(accumulator: number) {
+    this.processor = new SumProcessor(accumulator);
+  }
+
+  process(arr: number[]) {
+    for (let i = 0; i < arr.length; i++) {
+      this.processor.processElement(arr[i]);
+    }
+    return this.processor.getAccumulator();
+  }
+}
+
+class MinimumProcessor {
+  constructor(private accumulator: number) {}
+
+  getAccumulator() {
     return this.accumulator;
   }
 
@@ -18,16 +40,10 @@ class ArrayMinimum {
   }
 }
 
-class ArraySum {
-  private processor: SumProcessor;
-  constructor(private accumulator: number) {
-    this.processor = new SumProcessor();
-  }
+class SumProcessor {
+  constructor(private accumulator: number) {}
 
-  process(arr: number[]) {
-    for (let i = 0; i < arr.length; i++) {
-      this.processElement(arr[i]);
-    }
+  getAccumulator() {
     return this.accumulator;
   }
 
@@ -35,7 +51,3 @@ class ArraySum {
     this.accumulator += e;
   }
 }
-
-class MinimumProcessor {}
-
-class SumProcessor {}
