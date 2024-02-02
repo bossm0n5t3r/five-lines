@@ -725,12 +725,12 @@ class Key implements Tile {
   }
 
   moveHorizontal(dx: number): void {
-    remove(this.keyConfiguration.getRemoveStrategy());
+    this.keyConfiguration.removeLock();
     moveToTile(playerx + dx, playery);
   }
 
   moveVertical(dy: number): void {
-    remove(this.keyConfiguration.getRemoveStrategy());
+    this.keyConfiguration.removeLock();
     moveToTile(playerx, playery + dy);
   }
 
@@ -1098,7 +1098,10 @@ class KeyConfiguration {
 
   getColor = () => this.color;
   is1 = () => this._1;
-  getRemoveStrategy = () => this.removeStrategy;
+
+  removeLock() {
+    remove(this.removeStrategy);
+  }
 }
 
 const YELLOW_KEY = new KeyConfiguration('#ffcc00', true, new RemoveLock1());
