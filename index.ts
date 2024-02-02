@@ -712,7 +712,7 @@ class Key implements Tile {
   }
 
   draw(g: CanvasRenderingContext2D, x: number, y: number): void {
-    g.fillStyle = this.keyConfiguration.getColor();
+    this.keyConfiguration.setColor(g);
     g.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
   }
 
@@ -796,7 +796,7 @@ class LOCK implements Tile {
   }
 
   draw(g: CanvasRenderingContext2D, x: number, y: number): void {
-    g.fillStyle = this.keyConfiguration.getColor();
+    this.keyConfiguration.setColor(g);
     g.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
   }
 
@@ -1096,7 +1096,9 @@ class KeyConfiguration {
     private removeStrategy: RemoveStrategy,
   ) {}
 
-  getColor = () => this.color;
+  setColor(g: CanvasRenderingContext2D) {
+    g.fillStyle = this.color;
+  }
   is1 = () => this._1;
 
   removeLock() {
