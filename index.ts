@@ -55,8 +55,8 @@ class Resting implements FaillingState {
 class FallStrategy {
   constructor(private falling: FaillingState) {}
 
-  getFalling(): FaillingState {
-    return this.falling;
+  moveHorizontal(tile: Tile, dx: number): void {
+    this.falling.moveHorizontal(tile, dx);
   }
 
   update(tile: Tile, x: number, y: number): void {
@@ -466,7 +466,7 @@ class Stone implements Tile {
   }
 
   moveHorizontal(dx: number): void {
-    this.fallStrategy.getFalling().moveHorizontal(this, dx);
+    this.fallStrategy.moveHorizontal(this, dx);
   }
   moveVertical(dy: number): void {}
 
@@ -554,7 +554,7 @@ class Box implements Tile {
   }
 
   moveHorizontal(dx: number): void {
-    this.fallStrategy.getFalling().moveHorizontal(this, dx);
+    this.fallStrategy.moveHorizontal(this, dx);
   }
   moveVertical(dy: number): void {}
 
