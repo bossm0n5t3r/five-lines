@@ -60,7 +60,7 @@ class FallStrategy {
   }
 
   update(tile: Tile, x: number, y: number): void {
-    this.falling = map[y + 1][x].isAir() ? new Failling() : new Resting();
+    this.falling = map[y + 1][x].getBlockOnTopState();
     this.drop(tile, x, y);
   }
 
@@ -103,6 +103,8 @@ interface Tile {
   canFall(): boolean;
 
   update(x: number, y: number): void;
+
+  getBlockOnTopState(): FaillingState;
 }
 
 class Air implements Tile {
@@ -180,6 +182,10 @@ class Air implements Tile {
   }
 
   update(x: number, y: number): void {}
+
+  getBlockOnTopState(): FaillingState {
+    return new Failling();
+  }
 }
 
 class Flux implements Tile {
@@ -260,6 +266,10 @@ class Flux implements Tile {
   }
 
   update(x: number, y: number): void {}
+
+  getBlockOnTopState(): FaillingState {
+    return new Resting();
+  }
 }
 
 class Unbreakable implements Tile {
@@ -335,6 +345,10 @@ class Unbreakable implements Tile {
   }
 
   update(x: number, y: number): void {}
+
+  getBlockOnTopState(): FaillingState {
+    return new Resting();
+  }
 }
 
 class Player implements Tile {
@@ -407,6 +421,10 @@ class Player implements Tile {
   }
 
   update(x: number, y: number): void {}
+
+  getBlockOnTopState(): FaillingState {
+    return new Resting();
+  }
 }
 
 class Stone implements Tile {
@@ -495,6 +513,10 @@ class Stone implements Tile {
   update(x: number, y: number): void {
     this.fallStrategy.update(this, x, y);
   }
+
+  getBlockOnTopState(): FaillingState {
+    return new Resting();
+  }
 }
 
 class Box implements Tile {
@@ -578,6 +600,10 @@ class Box implements Tile {
 
   update(x: number, y: number): void {
     this.fallStrategy.update(this, x, y);
+  }
+
+  getBlockOnTopState(): FaillingState {
+    return new Resting();
   }
 }
 
@@ -663,6 +689,10 @@ class Key implements Tile {
   }
 
   update(x: number, y: number): void {}
+
+  getBlockOnTopState(): FaillingState {
+    return new Resting();
+  }
 }
 
 class LOCK implements Tile {
@@ -740,6 +770,10 @@ class LOCK implements Tile {
   }
 
   update(x: number, y: number): void {}
+
+  getBlockOnTopState(): FaillingState {
+    return new Resting();
+  }
 }
 
 enum RawInput {
