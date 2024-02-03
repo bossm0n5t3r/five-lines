@@ -819,7 +819,7 @@ class Left implements Input {
   }
 
   handle() {
-    map[player.getY()][player.getX() - 1].moveHorizontal(player, -1);
+    player.moveHorizontal(-1);
   }
 }
 
@@ -838,7 +838,7 @@ class Up implements Input {
   }
 
   handle() {
-    map[player.getY() - 1][player.getX()].moveVertical(player, -1);
+    player.moveVertical(-1);
   }
 }
 
@@ -857,19 +857,14 @@ class Down implements Input {
   }
 
   handle() {
-    map[player.getY() + 1][player.getX()].moveVertical(player, 1);
+    player.moveVertical(1);
   }
 }
 
 class Player {
   private x = 1;
   private y = 1;
-  getX(): number {
-    return this.x;
-  }
-  getY(): number {
-    return this.y;
-  }
+
   setX(x: number): void {
     this.x = x;
   }
@@ -884,6 +879,10 @@ class Player {
 
   moveHorizontal(dx: number): void {
     map[this.y][this.x + dx].moveHorizontal(this, dx);
+  }
+
+  moveVertical(dy: number): void {
+    map[this.y + dy][this.x].moveVertical(this, dy);
   }
 
   move(dx: number, dy: number): void {
