@@ -991,10 +991,6 @@ const transformTile = (tile: RawTile) => {
   }
 };
 
-const transformMap = (map: Map) => {
-  map.transform();
-};
-
 let inputs: Input[] = [];
 
 const remove = (map: Map, shouldRemove: RemoveStrategy) => {
@@ -1029,7 +1025,7 @@ function moveToTile(map: Map, player: Player, newx: number, newy: number) {
 
 function update(map: Map) {
   handleInputs(map);
-  updateMap(map);
+  map.update();
 }
 
 const handleInputs = (map: Map) => {
@@ -1037,10 +1033,6 @@ const handleInputs = (map: Map) => {
     let current = inputs.pop();
     current.handle(map);
   }
-};
-
-const updateMap = (map: Map) => {
-  map.update();
 };
 
 const createGraphics = () => {
@@ -1053,13 +1045,9 @@ const createGraphics = () => {
 
 function draw(map: Map) {
   let g = createGraphics();
-  drawMap(map, g);
+  map.draw(g);
   drawPlayer(g);
 }
-
-const drawMap = (map: Map, g: CanvasRenderingContext2D) => {
-  map.draw(g);
-};
 
 const drawPlayer = (g: CanvasRenderingContext2D) => {
   player.draw(g);
@@ -1076,7 +1064,7 @@ function gameLoop(map: Map) {
 }
 
 window.onload = () => {
-  transformMap(map);
+  map.transform();
   gameLoop(map);
 };
 
