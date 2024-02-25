@@ -926,6 +926,16 @@ class Map {
   setMap(map: Tile[][]): void {
     this._map = map;
   }
+
+  transform(): void {
+    this._map = new Array(rawMap.length);
+    for (let y = 0; y < rawMap.length; y++) {
+      this._map[y] = new Array(rawMap[y].length);
+      for (let x = 0; x < rawMap[y].length; x++) {
+        this._map[y][x] = transformTile(rawMap[y][x]);
+      }
+    }
+  }
 }
 
 let map = new Map();
@@ -966,13 +976,7 @@ const transformTile = (tile: RawTile) => {
 };
 
 const transformMap = (map: Map) => {
-  map.setMap(new Array(rawMap.length));
-  for (let y = 0; y < rawMap.length; y++) {
-    map.getMap()[y] = new Array(rawMap[y].length);
-    for (let x = 0; x < rawMap[y].length; x++) {
-      map.getMap()[y][x] = transformTile(rawMap[y][x]);
-    }
-  }
+  map.transform();
 };
 
 let inputs: Input[] = [];
