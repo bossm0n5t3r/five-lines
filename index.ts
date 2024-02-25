@@ -936,6 +936,14 @@ class Map {
       }
     }
   }
+
+  update(): void {
+    for (let y = this._map.length - 1; y >= 0; y--) {
+      for (let x = 0; x < this._map[y].length; x++) {
+        this._map[y][x].update(map, x, y);
+      }
+    }
+  }
 }
 
 let map = new Map();
@@ -1024,11 +1032,7 @@ const handleInputs = (map: Map) => {
 };
 
 const updateMap = (map: Map) => {
-  for (let y = map.getMap().length - 1; y >= 0; y--) {
-    for (let x = 0; x < map.getMap()[y].length; x++) {
-      map.getMap()[y][x].update(map, x, y);
-    }
-  }
+  map.update();
 };
 
 const createGraphics = () => {
