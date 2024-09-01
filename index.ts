@@ -18,6 +18,27 @@ class RemoveLock2 implements RemoveStrategy {
   };
 }
 
+class KeyConfiguration {
+  constructor(
+    private color: string,
+    private _1: boolean,
+    private removeStrategy: RemoveStrategy,
+  ) {}
+
+  setColor(g: CanvasRenderingContext2D) {
+    g.fillStyle = this.color;
+  }
+
+  is1 = () => this._1;
+
+  removeLock(map: Map) {
+    map.remove(this.removeStrategy);
+  }
+}
+
+const YELLOW_KEY = new KeyConfiguration('#ffcc00', true, new RemoveLock1());
+const SKY_BLUE_KEY = new KeyConfiguration('#00ccff', false, new RemoveLock2());
+
 enum RawTile {
   AIR,
   FLUX,
@@ -968,6 +989,16 @@ class Map {
       }
     }
   }
+
+  remove = (shouldRemove: RemoveStrategy) => {
+    for (let y = 0; y < this._map.length; y++) {
+      for (let x = 0; x < this._map[y].length; x++) {
+        if (shouldRemove.check(this._map[y][x])) {
+          this._map[y][x] = new Air();
+        }
+      }
+    }
+  };
 }
 
 let map = new Map();
@@ -1008,16 +1039,6 @@ const transformTile = (tile: RawTile) => {
 };
 
 let inputs: Input[] = [];
-
-const remove = (map: Map, shouldRemove: RemoveStrategy) => {
-  for (let y = 0; y < map.getMap().length; y++) {
-    for (let x = 0; x < map.getMap()[y].length; x++) {
-      if (shouldRemove.check(map.getMap()[y][x])) {
-        map.getMap()[y][x] = new Air();
-      }
-    }
-  }
-};
 
 function moveToTile(map: Map, player: Player, newx: number, newy: number) {
   player.moveToTile(map, newx, newy);
@@ -1078,23 +1099,3 @@ window.addEventListener('keydown', (e) => {
   else if (e.key === RIGHT_KEY || e.key === 'd') inputs.push(new Right());
   else if (e.key === DOWN_KEY || e.key === 's') inputs.push(new Down());
 });
-
-class KeyConfiguration {
-  constructor(
-    private color: string,
-    private _1: boolean,
-    private removeStrategy: RemoveStrategy,
-  ) {}
-
-  setColor(g: CanvasRenderingContext2D) {
-    g.fillStyle = this.color;
-  }
-  is1 = () => this._1;
-
-  removeLock(map: Map) {
-    remove(map, this.removeStrategy);
-  }
-}
-
-const YELLOW_KEY = new KeyConfiguration('#ffcc00', true, new RemoveLock1());
-const SKY_BLUE_KEY = new KeyConfiguration('#00ccff', false, new RemoveLock2());
